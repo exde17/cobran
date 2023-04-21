@@ -8,6 +8,8 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PersonaService } from './persona.service';
 import { CreatePersonaDto } from './dto/create-persona.dto';
@@ -28,9 +30,9 @@ export class PersonaController {
   }
 
   @Post()
-  @UsePipes(ValidationPipe)
+  // @UsePipes(ValidationPipe)
   createPersona(@Body() createPersonaDto: CreatePersonaDto) {
-    return createPersonaDto;
+    return this.personaService.createPersona(createPersonaDto);
   }
 
   @Patch(':id')

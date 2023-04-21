@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Persona } from './interface/Persona.interface';
 import { v4 as uuid } from 'uuid';
+import { CreatePersonaDto } from './dto/create-persona.dto';
 
 @Injectable()
 export class PersonaService {
@@ -34,5 +35,17 @@ export class PersonaService {
     if (!per) throw new NotFoundException(`persona con id: ${id} no existe`);
 
     return per;
+  }
+
+  createPersona(createPersonaDto: CreatePersonaDto) {
+    const persona: Persona = {
+      id: uuid(),
+      ...createPersonaDto,
+      // nombre: createPersonaDto.nombre,
+      // edad: createPersonaDto.edad,
+      // telefono: createPersonaDto.telefono,
+    };
+    this.perso.push(persona);
+    return persona;
   }
 }
