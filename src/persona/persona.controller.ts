@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { PersonaService } from './persona.service';
 import { CreatePersonaDto } from './dto/create-persona.dto';
+import { UpdatePersonaDto } from './dto/update-persona.dto';
 
 @Controller('persona')
 export class PersonaController {
@@ -36,15 +37,13 @@ export class PersonaController {
   }
 
   @Patch(':id')
-  updatePersona(@Param('id', ParseIntPipe) id: number, @Body() body: any) {
-    return body;
+  updatePersona(@Param('id', ParseUUIDPipe) id: string, 
+  @Body() updatePersonaDto: UpdatePersonaDto) {
+    return this.personaService.updatePersona(id, updatePersonaDto);
   }
 
   @Delete(':id')
-  deletePersona(@Param('id', ParseIntPipe) id: number) {
-    return {
-      message: `persona con id: ${id} eliminada`,
-      id: id,
-    };
+  deletePersona(@Param('id', ParseUUIDPipe) id: string) {
+    return this.personaService.deletePersona(id)
   }
 }

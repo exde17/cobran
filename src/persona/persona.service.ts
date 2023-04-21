@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Persona } from './interface/Persona.interface';
 import { v4 as uuid } from 'uuid';
-import { CreatePersonaDto } from './dto/create-persona.dto';
+// import { CreatePersonaDto } from './dto/create-persona.dto';
+import { UpdatePersonaDto, CreatePersonaDto } from './dto';
 
 @Injectable()
 export class PersonaService {
@@ -47,5 +48,25 @@ export class PersonaService {
     };
     this.perso.push(persona);
     return persona;
+  }
+
+  updatePersona(id: string, updatePersonaDto: UpdatePersonaDto) {
+    const persona = this.getPersonaById(id);
+    if ( updatePersonaDto.id && updatePersonaDto.id !== id)
+      throw new BadRequestException(`el id no puede ser modificado`);
+    this.perso = this.perso.map(per =>{
+      if(per.id === id){
+        return {...per, ...updatePersonaDto}
+      }
+      return per
+    })
+    return persona;
+  }
+
+  deletePersona(id: string){
+    const persona = this.getPersonaById(id);
+    this.perso = this.perso.filter(per => per.id !== id)
+    return persona;
+    
   }
 }
